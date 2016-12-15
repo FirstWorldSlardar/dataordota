@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Data visualisation</title>
+
+	<!-- On importe les grosse librairie -->
+	<script src="echarts.min.js" ></script>
+
+
+</head>
+<body>
+
+<script type="text/javascript" src="talent_data/dmg.js"></script>
+
+<script type="text/javascript">
+	var typeName = 'Damage';
+
+	var chart = document.getElementById('chart');
+	var myChart = echarts.init(chart);
+			
+	var level = ["10", "15","20","25"];
+
+	var heroes = parsed_data["heroes"];
+	var data = parsed_data["data"];
+
+	var option = {
+	    title: {
+	        text: 'Distribution des talents par '+ typeName,
+	        link: 'https://dota2.com/700'
+	    },
+	    /*
+	    legend: {
+	        data: ['Punch Card'],
+	        left: 'right'
+	    },
+	    */
+	    polar: {},
+	    // ce qui est affiché en y passant la souris
+	    tooltip: {
+	    	// params.value[] est un element de data = [x,y,z]
+	        formatter: function (params) {
+	            return params.value[2]+ " " + typeName+ " at Level  " + level[params.value[0]];
+	        }
+	    },
+	    angleAxis: {
+	        type: 'category',
+	        data: heroes,
+	        boundaryGap: false,
+	        splitLine: {
+	            show: true,
+	            lineStyle: {
+	                color: '#999',
+	                type: 'dashed',
+	            }
+	        },
+	        axisLine: {
+	            show: false
+	        }
+	    },
+	    radiusAxis: {
+	        type: 'category',
+	        data: level,
+	        axisLine: {
+	            show: false
+	        },
+	        axisLabel: {
+	            rotate: 45
+	        }
+	    },
+	    series: [{
+	        name: 'Punch Card',
+	        type: 'scatter',
+	        coordinateSystem: 'polar',
+	        symbolSize: function (val) {
+	            return val[2] * 2;
+	        },
+	        data: data,
+	        animationDelay: function (idx) {
+	            return idx * 5;
+	        }
+	    }]
+	};
+
+	myChart.setOption(option);
+</script>
+
+<!-- A modifier dynamiquement
+<script type="text/javascript" src='talent_data/dmg.js'></script>-->
+<!-- -->
+<p> Select type : <b id="type"></b> </p>	
+<div id="chart" style="min-width: 700px; min-height: 650px;"></div>
+
+</body>
+</html>
