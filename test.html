@@ -5,15 +5,36 @@
 
 	<!-- On importe les grosse librairie -->
 	<script src="echarts.min.js" ></script>
+	<script type="text/javascript" src="jquery.min.js"></script>
 
 
 </head>
 <body>
 
-<script type="text/javascript" src="talent_data/dmg.js"></script>
+<!-- A modifier dynamiquement -->
+<script type="text/javascript" src='talent_data/dmg.js'></script>
+<!-- -->
 
 <script type="text/javascript">
-	var typeName = 'Damage';
+
+	function changeTalentType(){
+		document.getElementById("type").innerHTML = typeName;
+	}
+
+	function insertOption(talentType){
+		var newOption = document.createElement('option');
+		newOption.setAttribute('value', talentType);
+		newOption.innerHTML = talentType;
+		document.getElementById("selection").appendChild(newOption);
+	}
+
+	var typeName = parsed_data['type'];
+	var allTypes = parsed_data['allTypes'];
+
+	console.log(parsed_data['type']);
+	console.log(typeName);
+
+	changeTalentType(typeName);
 
 	var chart = document.getElementById('chart');
 	var myChart = echarts.init(chart);
@@ -84,9 +105,25 @@
 	myChart.setOption(option);
 </script>
 
-<!-- A modifier dynamiquement
-<script type="text/javascript" src='talent_data/dmg.js'></script>-->
-<!-- -->
+
+<select id="selection">
+</select>
+
+<script type="text/javascript">
+	for(i=0; i< allTypes.length; i++){
+		insertOption(allTypes[i]);
+	}
+	$( "selection" )
+	  .change(function() {
+	    var str = "";
+	    $( "select option:selected" ).each(function() {
+	      str += $( this ).text() + " ";
+	    });
+	    $( "div" ).text( str );
+	  })
+	  .trigger( "change" );
+</script>
+
 <p> Select type : <b id="type"></b> </p>	
 <div id="chart" style="min-width: 700px; min-height: 650px;"></div>
 
