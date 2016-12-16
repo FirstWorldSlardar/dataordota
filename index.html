@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Data visualisation</title>
+
+	<!-- On importe les grosse librairie -->
+	<script src="echarts.min.js" ></script>
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<!-- -->
+
+	<script type="text/javascript" src="functions.js"></script>
+	<script type="text/javascript" src="talent_data/allTypes.js"></script>
+
+
+</head>
+<body>
+
+<!-- A modifier dynamiquement -->
+<script type="text/javascript" src='talent_data/dmg.js'></script>
+<!-- -->
+
+<select id="selection">
+</select>
+
+<div id="chart" style="min-width: 700px;min-height: 500px;width:100%;"></div>
+
+<script type="text/javascript">
+	for(i=0; i< allTypes.length; i++){
+		insertOption(allTypes[i]);
+	}
+	
+	var typeName = allTypes[0];
+	console.log(typeName);
+	setGraphOptions(typeName, parsed_data);
+
+	$('#selection')
+		.change(
+			function(){
+				typeName =$( "#selection option:selected" ).text();
+				setGraphOptions(typeName, parsed_data);
+				// ressemblera a: setGraphOption(typeName, $.ajax(get( path .json )).value)
+	});
+	
+	
+
+</script>
+
+
+
+
+</body>
+</html>
