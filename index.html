@@ -14,13 +14,14 @@
 </head>
 <body>
 
-
 <select id="selection">
 </select>
 
-<div id="chart" style="min-width: 700px;min-height: 500px;width:100%;"></div>
+<div id="chart" style="min-width: 1200px;min-height: 1000px;"></div>
 
 <script type="text/javascript">
+	parsed_data["allTypes"] = ["Damage"];
+	console.log(parsed_data);
 	for(i=0; i< parsed_data["allTypes"].length; i++){
 		insertOption(parsed_data["allTypes"][i]);
 	}
@@ -35,9 +36,6 @@
 				setGraphOptions(typeName, parsed_data[typeName]);
 				// ressemblera a: setGraphOption(typeName, $.ajax(get( path .json )).value)
 	});
-	
-	
-
 </script>
 
 

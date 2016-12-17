@@ -4,13 +4,14 @@ function setGraphOptions(typeName, parsed_data){
 			
 	var level = ["10", "15","20","25"];
 
+	print(parsed_data);
 	var heroes = parsed_data['heroes'];
 	var data = parsed_data['data'];
 
 	var option = {
 	    title: {
 	        text: 'Distribution des talents par '+ typeName,
-	        link: 'https://dota2.com/700'
+	        link: 'http://www.dota2.com/700/gameplay/'
 	    },
 	  
 	    polar: {},
@@ -18,7 +19,7 @@ function setGraphOptions(typeName, parsed_data){
 	    tooltip: {
 	    	// params.value[] est un element de data = [x,y,z]
 	        formatter: function (params) {
-	            return params.value[2]+ " " + typeName+ " at Level  " + level[params.value[0]];
+	            return params.value[2]+ " " + typeName+ " at Level  " + level[params.value[0]]+ " -"+heroes[params.value[1]];
 	        }
 	    },
 	    angleAxis: {
@@ -51,7 +52,7 @@ function setGraphOptions(typeName, parsed_data){
 	        type: 'scatter',
 	        coordinateSystem: 'polar',
 	        symbolSize: function (val) {
-	            return val[2] * 2;
+	            return val[2] * 0.39;
 	        },
 	        data: data,
 	        animationDelay: function (idx) {
