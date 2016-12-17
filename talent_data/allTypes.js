@@ -1,1 +1,0 @@
-allTypes= ["Damage", "HP", "Mana", "Gold/min"];

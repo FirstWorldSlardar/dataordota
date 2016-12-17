@@ -9,15 +9,11 @@
 	<!-- -->
 
 	<script type="text/javascript" src="functions.js"></script>
-	<script type="text/javascript" src="talent_data/allTypes.js"></script>
-
+	<script type="text/javascript" src='talent_data/parsed_data.js'></script>
 
 </head>
 <body>
 
-<!-- A modifier dynamiquement -->
-<script type="text/javascript" src='talent_data/dmg.js'></script>
-<!-- -->
 
 <select id="selection">
 </select>
@@ -25,19 +21,18 @@
 <div id="chart" style="min-width: 700px;min-height: 500px;width:100%;"></div>
 
 <script type="text/javascript">
-	for(i=0; i< allTypes.length; i++){
-		insertOption(allTypes[i]);
+	for(i=0; i< parsed_data["allTypes"].length; i++){
+		insertOption(parsed_data["allTypes"][i]);
 	}
 	
-	var typeName = allTypes[0];
-	console.log(typeName);
-	setGraphOptions(typeName, parsed_data);
+	var typeName = parsed_data["allTypes"][0];
+	setGraphOptions(typeName, parsed_data[typeName]);
 
 	$('#selection')
 		.change(
 			function(){
-				typeName =$( "#selection option:selected" ).text();
-				setGraphOptions(typeName, parsed_data);
+				typeName = $( "#selection option:selected" ).text();
+				setGraphOptions(typeName, parsed_data[typeName]);
 				// ressemblera a: setGraphOption(typeName, $.ajax(get( path .json )).value)
 	});
 	
