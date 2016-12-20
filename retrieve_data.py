@@ -1,4 +1,6 @@
 # -*- coding: utf8 -*-
+import re
+import math
 import fileinput
 from urllib.request import urlopen
 import json
@@ -18,6 +20,20 @@ f.close()
 
 """ On les parse dans un fichier JSON
 soup = BeautifulSoup(open("data.xml"), "lxml").find(id="HeroChanges")
+
+
+def parseValue(chaine):
+	try:
+		returnString = re.findall("\+\d+|-\d+|\d+",chaine)[0]
+	except:
+		returnString = chaine
+	return returnString
+
+def parseType(chaine):
+	if chaine == 'HP':
+		return "Health"
+	else:
+		return chaine
 
 dic = {}
 
@@ -42,10 +58,12 @@ for element in soup.find_all('figure'):
 			except:
 				contenuSplit = contenu.split(' OR')[i]
 
+			print(contenuSplit.split(' ', 1)[0] +" - type: "+ contenuSplit.split(' ', 1)[1]);
+
 			dic[hero_name][niveau][i+1] = \
 			{
-				'type':contenuSplit.split(' ', 1)[1] ,
-				'valeur':contenuSplit.split(' ', 1)[0],
+				'type': parseType(contenuSplit.split(' ', 1)[1]),
+				'valeur': parseValue(contenuSplit.split(' ', 1)[0]),
 				'string': contenuSplit
 			}
 		# on ajoute les deux possibilités pour chaque niveau
@@ -59,15 +77,34 @@ with open('data.json', 'w') as fp:
     json.dump(dic, fp)
 """
 
-with open('data.json') as data_file:    
-    data = json.load(data_file)
+# """
+allTypes = [
+"Damage",
+"Health",
+"Mana",
+"Intelligence",
+"Agility",
+"Strength",
+"All Stats",
+"Magic Resistance",
+"Armor",
+"Respawn Time",
+"Cast Range",
+"XP Gain",
+"Gold/Min",
+"Movement Speed",
+"Attack Speed",
+"Health Regen",
+"Spell Amplification",
+"Evasion"
+];
 
-
-def parseType(givenType):
+def parseType(data, givenType):
 	dico = {}
-	dico[givenType]={}
-	dico[givenType]['heroes'], dico[givenType]['data'] = [] , []
+	dico={}
+	dico['heroes'], dico['data'] = [] , []
 	count =0
+	maxValue = 0
 	for hero in data.keys():
 		for level in data[hero].keys():
 			for choice in data[hero][level].keys():
@@ -75,22 +112,27 @@ def parseType(givenType):
 				print(data[hero][level][choice]['type'])
 				if data[hero][level][choice]['type'] == givenType:
 					valeur = data[hero][level][choice]['valeur']
-					dico[givenType]['data'].append([int((int(level)-10)/5),len(dico[givenType]['heroes']), int(valeur)])
-					dico[givenType]['heroes'].append(hero)
+					dico['data'].append([int((int(level)-10)/5),len(dico['heroes']), int(valeur)])
+					if math.fabs(int(valeur)) >= maxValue:
+						maxValue= math.fabs(int(valeur))
+					dico['heroes'].append(hero)
+	dico['maxValue'] = maxValue
 	print(count)
 	return dico
 
+def allParsedData(data, allTypes):
+	dic = {
+		"allTypes": allTypes
+	}
+	for talentType in allTypes:
+		dic[talentType]= parseType(data, talentType)
+	return dic
 
-# def transformJS(file):
-# 	for linenum,line in enumerate( fileinput.FileInput(file,inplace=1) ):
-# 	   if linenum==0 :
-# 	     print("parsed_data =")
-# 	     print(line.rstrip())
-# 	   else:
-# 	     print(line.rstrip())
+with open('data.json') as data_file:    
+    data = json.load(data_file)
 
 with open('talent_data/parsed_data.json', 'w') as fp:
-    json.dump(parseType("Damage"), fp)
+    json.dump(allParsedData(data, allTypes), fp)
     fp.close()
 
     f1 = open('talent_data/parsed_data.json', 'r')
@@ -99,3 +141,4 @@ with open('talent_data/parsed_data.json', 'w') as fp:
     f2 = open('talent_data/parsed_data.js', 'w')
     f2.write('parsed_data='+fin)
     f2.close()
+# """

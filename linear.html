@@ -9,6 +9,12 @@
 	<!-- -->
 
 	<script type="text/javascript" src="functions.js"></script>
+	<!--
+	<script type="text/javascript">
+		var parsed_data = JSON.parse('talent_data/parsed_data.json');
+		console.log(parsed_data);
+	</script>
+	-->
 	<script type="text/javascript" src='talent_data/parsed_data.js'></script>
 	
 </head>
@@ -17,21 +23,23 @@
 <select id="selection">
 </select>
 
-<div id="chart" style="min-width: 1200px;min-height: 1000px;"></div>
+<div id="chart" style="min-width: 1200px;min-height: 2000px;"></div>
 
 <script type="text/javascript">
+	parsed_data["allTypes"] = ["Damage"];
+	console.log(parsed_data);
 	for(i=0; i< parsed_data["allTypes"].length; i++){
 		insertOption(parsed_data["allTypes"][i]);
 	}
 	
 	var typeName = parsed_data["allTypes"][0];
-	setGraphOptions(typeName, parsed_data[typeName]);
+	setGraphOptionsLinear(typeName, parsed_data[typeName]);
 
 	$('#selection')
 		.change(
 			function(){
 				typeName = $( "#selection option:selected" ).text();
-				setGraphOptions(typeName, parsed_data[typeName]);
+				setGraphOptionsLinear(typeName, parsed_data[typeName]);
 				// ressemblera a: setGraphOption(typeName, $.ajax(get( path .json )).value)
 	});
 </script>
