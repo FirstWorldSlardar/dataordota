@@ -35,7 +35,7 @@ function setGraphOptions(typeName, parsed_data){
 	            lineStyle: {
 	                color: '#999',
 	                type: 'dashed',
-	            }
+	            }	            
 	        },
 	        axisLine: {
 	            show: false
@@ -48,7 +48,7 @@ function setGraphOptions(typeName, parsed_data){
 	            show: false
 	        },
 	        axisLabel: {
-	            rotate: 45
+	            rotate:45,
 	        }
 	    },
 	    series: [{

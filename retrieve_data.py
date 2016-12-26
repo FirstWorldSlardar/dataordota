@@ -1,10 +1,14 @@
 # -*- coding: utf8 -*-
 import re
+import operator
 import math
 import fileinput
 from urllib.request import urlopen
 import json
 from bs4 import BeautifulSoup
+
+def compose(f, g):
+    return lambda *args: f(g(*args))
 
 """ Recuperation des donnees HTML
 html = urlopen("http://www.dota2.com/700/gameplay/#HeroChanges")
@@ -96,34 +100,39 @@ allTypes = [
 "Attack Speed",
 "Health Regen",
 "Spell Amplification",
-"Evasion"
+"Evasion",
+"Mana Regen"
 ];
 
 def parseType(data, givenType):
-	dico = {}
 	dico={}
 	dico['heroes'], dico['data'] = [] , []
-	count =0
+	dicoIntermediaire = {}
 	maxValue = 0
 	for hero in data.keys():
 		for level in data[hero].keys():
 			for choice in data[hero][level].keys():
-				count = count +1
-				print(data[hero][level][choice]['type'])
 				if data[hero][level][choice]['type'] == givenType:
 					valeur = data[hero][level][choice]['valeur']
-					dico['data'].append([int((int(level)-10)/5),len(dico['heroes']), int(valeur)])
+					dicoIntermediaire[hero] = [level, valeur]
 					if math.fabs(int(valeur)) >= maxValue:
 						maxValue= math.fabs(int(valeur))
-					dico['heroes'].append(hero)
+	for tupleItem in sorted(dicoIntermediaire.items(), key=compose(operator.itemgetter(1),operator.itemgetter(1))):
+		"""
+		un tupleItem a la forme suivante:
+		('df', ['25', 9])
+		"""
+		dico['data'].append([int((int(tupleItem[1][0])-10)/5),len(dico['heroes']), int(tupleItem[1][1])])
+		dico['heroes'].append(tupleItem[0])
+	dicoIntermediaire = {}
 	dico['maxValue'] = maxValue
-	print(count)
 	return dico
 
 def allParsedData(data, allTypes):
 	dic = {
 		"allTypes": allTypes
 	}
+	print("Nombre de type de talent : "+str(len(allTypes)))
 	for talentType in allTypes:
 		dic[talentType]= parseType(data, talentType)
 	return dic
@@ -141,4 +150,7 @@ with open('talent_data/parsed_data.json', 'w') as fp:
     f2 = open('talent_data/parsed_data.js', 'w')
     f2.write('parsed_data='+fin)
     f2.close()
+
+
+
 # """
