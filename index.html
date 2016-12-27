@@ -2,14 +2,16 @@
 <html>
 <head>
 	<title>Data visualisation</title>
-
+	<link rel="stylesheet" type="text/css" src="jquery.dataTables.css">
 	<!-- On importe les grosse librairie -->
 	<script src="echarts.min.js" ></script>
 	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src='datatable.js'></script>
 	<!-- -->
 
 	<script type="text/javascript" src="functions.js"></script>
 	<script type="text/javascript" src='talent_data/parsed_data.js'></script>
+	<script type="text/javascript" src='talent_data/dataSet.js'></script>
 	
 </head>
 <body>
@@ -34,6 +36,24 @@
 				setGraphOptions(typeName, parsed_data[typeName]);
 				// ressemblera a: setGraphOption(typeName, $.ajax(get( path .json )).value)
 	});
+</script>
+
+<table id="datatable"></table>
+
+<script type="text/javascript">
+	
+$(document).ready(function() {
+    $('#datatable').DataTable( {
+        data: dataSet,
+        columns: [
+            { title: "Hero" },
+            { title: "Lvl 10" },
+            { title: "Lvl 15" },
+            { title: "Lvl 20" },
+            { title: "Lvl 25" }
+        ]
+    } );
+} );
 </script>
 
 
