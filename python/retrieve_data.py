@@ -16,14 +16,14 @@ data = html.read().decode("utf-8")
 print(data)
 
 
-f = open("data.xml", 'w+')
+f = open("../data/data.xml", 'w+')
 f.write(data)
 f.close()
 """ 
 
 
 """ On les parse dans un fichier JSON
-soup = BeautifulSoup(open("data.xml"), "lxml").find(id="HeroChanges")
+soup = BeautifulSoup(open("../data/data.xml"), "lxml").find(id="HeroChanges")
 
 
 def parseValue(chaine):
@@ -77,7 +77,7 @@ for element in soup.find_all('figure'):
 
 print(count)
 # enregistrement en json
-with open('data.json', 'w') as fp:
+with open('../data/data.json', 'w') as fp:
     json.dump(dic, fp)
 """
 
@@ -137,10 +137,10 @@ def allParsedData(data, allTypes):
 		dic[talentType]= parseType(data, talentType)
 	return dic
 
-with open('data.json') as data_file:    
+with open('../data/data.json') as data_file:    
     data = json.load(data_file)
 
-with open('talent_data/parsed_data.js', 'w') as fp:
+with open('../data/parsed_data.js', 'w') as fp:
     fp.write("parsed_data="+str(allParsedData(data, allTypes)))
     fp.close()
 
