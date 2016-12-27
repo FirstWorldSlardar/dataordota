@@ -140,17 +140,18 @@ def allParsedData(data, allTypes):
 with open('data.json') as data_file:    
     data = json.load(data_file)
 
-with open('talent_data/parsed_data.json', 'w') as fp:
-    json.dump(allParsedData(data, allTypes), fp)
+with open('talent_data/parsed_data.js', 'w') as fp:
+    # json.dump(allParsedData(data, allTypes), fp)
+    # fp.close()
+
+    # f1 = open('talent_data/parsed_data.json', 'r')
+    # fin = f1.read()
+    # f1.close()
+    # f2 = open('talent_data/parsed_data.js', 'w')
+    # f2.write('parsed_data='+fin)
+    # f2.close()
+    fp.write("parsed_data="+str(allParsedData(data, allTypes)))
     fp.close()
-
-    f1 = open('talent_data/parsed_data.json', 'r')
-    fin = f1.read()
-    f1.close()
-    f2 = open('talent_data/parsed_data.js', 'w')
-    f2.write('parsed_data='+fin)
-    f2.close()
-
 
 
 # """
