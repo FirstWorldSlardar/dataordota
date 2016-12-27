@@ -117,7 +117,7 @@ def parseType(data, givenType):
 					dicoIntermediaire[hero] = [level, valeur]
 					if math.fabs(int(valeur)) >= maxValue:
 						maxValue= math.fabs(int(valeur))
-	for tupleItem in sorted(dicoIntermediaire.items(), key=compose(operator.itemgetter(1),operator.itemgetter(1))):
+	for tupleItem in sorted(dicoIntermediaire.items(), key=compose(lambda x:int(x),compose(operator.itemgetter(1),operator.itemgetter(1)))):
 		"""
 		un tupleItem a la forme suivante:
 		('df', ['25', 9])
@@ -141,15 +141,6 @@ with open('data.json') as data_file:
     data = json.load(data_file)
 
 with open('talent_data/parsed_data.js', 'w') as fp:
-    # json.dump(allParsedData(data, allTypes), fp)
-    # fp.close()
-
-    # f1 = open('talent_data/parsed_data.json', 'r')
-    # fin = f1.read()
-    # f1.close()
-    # f2 = open('talent_data/parsed_data.js', 'w')
-    # f2.write('parsed_data='+fin)
-    # f2.close()
     fp.write("parsed_data="+str(allParsedData(data, allTypes)))
     fp.close()
 
