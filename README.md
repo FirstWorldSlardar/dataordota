@@ -1,7 +1,5 @@
 # Talents comparisons
 Representation of heroes talents distribution by type
 
-Dota2 last data update: 7.00 patch
-
-Result: (AVAST may find .bugs3.com dangerous and be loudy ! Otherwise it's fine, just a free server I host this example on) http://dataordota.bugs3.com/
+Done after the release of the Dota2 7.00 patch (data have to be fetched again)
 
